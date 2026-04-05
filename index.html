@@ -50,15 +50,24 @@
     transition: all 0.2s; font-family: 'Lora', serif; position: relative;
   }
   .toolbar button:hover { background: rgba(255,255,255,0.12); color: var(--gold-light); }
+  .toolbar button:active, .toolbar button.active { background: rgba(184,134,11,0.25); color: var(--gold-light); }
+  .toolbar button[title]:hover::after {
+    content: attr(title); position: absolute; bottom: -30px; left: 50%;
+    transform: translateX(-50%); background: #1a0e08; color: #d4c4a8;
+    padding: 3px 8px; border-radius: 4px; font-size: 11px; white-space: nowrap; pointer-events: none;
+  }
   .toolbar select {
     background: rgba(255,255,255,0.08); border: 1px solid rgba(255,255,255,0.15);
     color: #d4c4a8; padding: 4px 8px; border-radius: 6px; font-size: 12px;
     font-family: 'Lora', serif; cursor: pointer; outline: none;
   }
+  .toolbar select:hover { border-color: var(--gold); }
+  .toolbar select option { background: #2c1810; color: #d4c4a8; }
   .color-dot {
     width: 16px; height: 16px; border-radius: 50%;
     border: 2px solid rgba(255,255,255,0.2); cursor: pointer; transition: transform 0.2s;
   }
+  .color-dot:hover { transform: scale(1.2); border-color: var(--gold); }
 
   /* Tabs */
   .tab-bar {
@@ -71,6 +80,7 @@
     cursor: pointer; transition: all 0.2s; letter-spacing: 0.5px;
     border-bottom: 3px solid transparent;
   }
+  .tab-btn:hover { color: #d4c4a8; }
   .tab-btn.active { color: var(--gold-light); border-bottom-color: var(--gold); background: rgba(184,134,11,0.08); }
 
   /* Notebook */
@@ -89,7 +99,9 @@
     position: relative; z-index: 5; padding: 40px 50px 60px 70px;
     outline: none; line-height: 32px; font-size: 16px; min-height: 80vh;
   }
+  .content:focus { outline: none; }
 
+  /* Tab content visibility */
   .tab-content { display: none; }
   .tab-content.active { display: block; }
 
@@ -100,6 +112,7 @@
   }
   .subtitulo { font-family: 'Dancing Script', cursive; font-size: 20px; color: var(--gold); text-align: center; margin-bottom: 24px; }
 
+  /* Versículos en rojo — legibles */
   .verso-ref {
     color: var(--red-letter); font-weight: 700; font-size: 13px;
     font-family: 'Playfair Display', serif; letter-spacing: 0.3px;
@@ -121,6 +134,7 @@
   .seccion-titulo { font-family: 'Playfair Display', serif; font-size: 22px; font-weight: 700; color: var(--crimson); margin-top: 28px; margin-bottom: 4px; }
   .seccion-numero { font-family: 'Dancing Script', cursive; font-size: 42px; color: var(--gold); font-weight: 700; line-height: 1; display: inline-block; margin-right: 8px; vertical-align: middle; }
   .seccion-sub { color: var(--gold); font-style: italic; font-size: 14px; margin-bottom: 10px; }
+  .detalle-label { font-weight: 700; color: var(--crimson-light); font-size: 15px; margin-top: 16px; display: block; font-family: 'Playfair Display', serif; letter-spacing: 0.5px; }
   .para-recordar {
     background: linear-gradient(135deg, var(--gold-glow), rgba(184,134,11,0.06));
     border-left: 4px solid var(--gold); padding: 12px 16px; margin: 16px 0;
@@ -129,51 +143,118 @@
   }
   .punto-impacto { padding-left: 20px; position: relative; margin: 6px 0; }
   .punto-impacto::before { content: '✦'; position: absolute; left: 0; color: var(--gold); font-size: 10px; top: 2px; }
-
-  /* BUENA NOTICIA STYLE */
-  .buena-noticia {
-    background: linear-gradient(to dotted, var(--gold-glow), transparent);
-    border: 2px dashed var(--gold); border-radius: 12px;
-    padding: 18px; margin-bottom: 30px; position: relative;
-    text-align: center; font-family: 'Lora', serif; font-style: italic;
+  .conclusion-box {
+    background: linear-gradient(135deg, rgba(139,26,26,0.06), rgba(184,134,11,0.06));
+    border: 1px solid rgba(184,134,11,0.2); border-radius: 12px; padding: 20px 24px; margin-top: 24px;
   }
-  .buena-noticia-label {
-    position: absolute; top: -12px; left: 50%; transform: translateX(-50%);
-    background: var(--gold); color: white; padding: 2px 12px; border-radius: 20px;
-    font-size: 11px; font-weight: 700; letter-spacing: 1px; text-transform: uppercase;
+  .conclusion-titulo { font-family: 'Playfair Display', serif; font-size: 20px; font-weight: 700; color: var(--crimson); margin-bottom: 8px; }
+  .tesis-central {
+    background: linear-gradient(135deg, rgba(139,26,26,0.08), rgba(139,26,26,0.03));
+    border: 2px solid var(--crimson); border-radius: 10px; padding: 16px 20px; margin: 20px 0;
+    text-align: center; font-family: 'Playfair Display', serif; font-size: 17px;
+    color: var(--crimson); font-weight: 600; line-height: 1.6;
+  }
+  .cielo-box {
+    background: linear-gradient(135deg, rgba(26,82,118,0.08), rgba(184,134,11,0.08));
+    border: 2px solid var(--gold); border-radius: 10px; padding: 18px 22px; margin: 20px 0;
+    text-align: center; font-family: 'Playfair Display', serif; font-size: 16px;
+    color: var(--ink); line-height: 1.7;
   }
 
-  /* Presentation Tab specific */
-  .pres-box { margin-bottom: 25px; padding: 15px; border-bottom: 1px solid var(--gold-glow); }
-  .pres-bullet { list-style: none; padding-left: 10px; border-left: 2px solid var(--crimson); margin: 10px 0; font-size: 18px;}
+  /* === MINIMAL TAB === */
+  .min-section { margin-bottom: 32px; }
+  .min-title {
+    font-family: 'Playfair Display', serif; font-size: 18px; font-weight: 700;
+    color: var(--crimson); margin-bottom: 4px;
+  }
+  .min-sub { color: var(--gold); font-size: 13px; font-style: italic; margin-bottom: 8px; }
+  .min-body { font-size: 15px; line-height: 1.7; color: var(--ink-light); }
+  .min-body b { color: var(--ink); }
+  .min-frase {
+    font-family: 'Playfair Display', serif; font-size: 14px; font-style: italic;
+    color: var(--gold); margin-top: 10px; padding-left: 14px;
+    border-left: 3px solid var(--gold);
+  }
+  .min-conclusion {
+    margin-top: 28px; padding: 16px 20px;
+    border: 1px solid rgba(184,134,11,0.25); border-radius: 10px;
+    background: rgba(184,134,11,0.04);
+  }
+  .min-arrow { color: var(--gold); font-weight: 700; }
 
+  @media print {
+    body { background: white; padding: 0; }
+    .toolbar, .tab-bar { display: none !important; }
+    .notebook { box-shadow: none; max-width: 100%; border-radius: 0; }
+    .spine { display: none; }
+    .content { padding: 30px 50px; }
+  }
+  @media (max-width: 600px) {
+    body { padding: 8px; }
+    .toolbar { border-radius: 10px 10px 0 0; padding: 8px 10px; }
+    .content { padding: 30px 24px 40px 52px; }
+    .titulo-principal { font-size: 26px; }
+    .seccion-numero { font-size: 32px; }
+    .spine-hole { left: 6px; width: 14px; height: 14px; }
+    .tab-btn { font-size: 12px; padding: 8px 10px; }
+  }
+  body.presentation-mode .notebook { max-width: 100%; min-height: 100vh; border-radius: 0; }
+  body.presentation-mode .content { font-size: 20px; line-height: 38px; padding: 50px 80px 60px 110px; }
+  body.presentation-mode .titulo-principal { font-size: 48px; }
+  body.presentation-mode .seccion-titulo { font-size: 30px; }
+  body.presentation-mode .seccion-numero { font-size: 56px; }
 </style>
 </head>
-<body id="main-body">
+<body>
 
-<div class="toolbar">
+<!-- Toolbar -->
+<div class="toolbar" id="toolbar">
   <div class="toolbar-group">
-    <select onchange="document.execCommand('fontSize', false, this.value)">
-      <option value="3">14</option><option value="4" selected>16</option>
-      <option value="5">18</option>
+    <select onchange="changeFontSize(this.value)">
+      <option value="14">14</option><option value="16" selected>16</option>
+      <option value="18">18</option><option value="20">20</option>
+      <option value="24">24</option><option value="28">28</option>
     </select>
   </div>
   <div class="toolbar-group">
-    <button onclick="document.execCommand('bold')"><b>N</b></button>
-    <button onclick="document.execCommand('italic')"><i>I</i></button>
-    <button onclick="document.execCommand('underline')"><u>S</u></button>
+    <button onclick="execCmd('bold')" title="Negrita"><b>N</b></button>
+    <button onclick="execCmd('italic')" title="Cursiva"><i>I</i></button>
+    <button onclick="execCmd('underline')" title="Subrayado"><u>S</u></button>
+    <button onclick="execCmd('strikeThrough')" title="Tachar"><s>T</s></button>
   </div>
   <div class="toolbar-group">
-    <button onclick="window.print()">🖨</button>
+    <button onclick="execCmd('justifyLeft')" title="Izquierda">☰</button>
+    <button onclick="execCmd('justifyCenter')" title="Centrar">≡</button>
+    <button onclick="execCmd('justifyRight')" title="Derecha">☷</button>
+  </div>
+  <div class="toolbar-group">
+    <div class="color-dot" style="background:#2c1810" onclick="execCmdVal('foreColor','#2c1810')" title="Negro"></div>
+    <div class="color-dot" style="background:#8b1a1a" onclick="execCmdVal('foreColor','#8b1a1a')" title="Carmesí"></div>
+    <div class="color-dot" style="background:#b8860b" onclick="execCmdVal('foreColor','#b8860b')" title="Dorado"></div>
+    <div class="color-dot" style="background:#1a5276" onclick="execCmdVal('foreColor','#1a5276')" title="Azul"></div>
+  </div>
+  <div class="toolbar-group">
+    <button onclick="execCmdVal('hiliteColor','#fff9c4')" title="Resaltar">🖍</button>
+    <button onclick="execCmdVal('hiliteColor','transparent')" title="Quitar">✕</button>
+  </div>
+  <div class="toolbar-group">
+    <button onclick="execCmd('insertUnorderedList')" title="Lista">•</button>
+    <button onclick="execCmd('indent')" title="Indentar">→</button>
+    <button onclick="execCmd('outdent')" title="Des-indentar">←</button>
+  </div>
+  <div class="toolbar-group">
+    <button onclick="togglePresentation()" title="Presentación" id="presBtn">📺</button>
+    <button onclick="window.print()" title="Imprimir">🖨</button>
   </div>
 </div>
 
+<!-- Tabs -->
 <div class="tab-bar">
   <button class="tab-btn active" onclick="switchTab('completo')">✦ Completo</button>
   <button class="tab-btn" onclick="switchTab('minimal')">◇ Minimalista</button>
-  <button class="tab-btn" onclick="switchTab('presentacion')">📺 Presentación</button>
 </div>
 
+<!-- Notebook -->
 <div class="notebook">
   <div class="spine">
     <div class="spine-hole" style="top:60px"></div>
@@ -181,103 +262,368 @@
     <div class="spine-hole" style="top:400px"></div>
     <div class="spine-hole" style="top:620px"></div>
     <div class="spine-hole" style="top:840px"></div>
+    <div class="spine-hole" style="top:1060px"></div>
+    <div class="spine-hole" style="top:1280px"></div>
+    <div class="spine-hole" style="top:1500px"></div>
   </div>
 
-  <div class="content tab-content active" contenteditable="true" id="tab-completo">
-    
-    <div class="buena-noticia">
-      <span class="buena-noticia-label">La Buena Noticia</span>
-      ¡El intercambio fue total! Jesús tomó la corona que nosotros merecíamos (la de la maldición) para darnos la corona que solo Él merecía (la de la Vida). ¡Hoy caminas bajo un cielo abierto y una herencia activada!
+  <!-- ==================== TAB COMPLETO ==================== -->
+  <div class="content tab-content active" contenteditable="true" spellcheck="true" id="tab-completo">
+
+    <div class="titulo-principal">Una Corona, Una Victoria</div>
+    <div class="subtitulo">Los símbolos que la tierra no entendió y el cielo consumó</div>
+
+    <div class="texto-base">
+      <span class="verso-ref">Lucas 24:50-51</span>
+      <span class="verso-text">«Los sacó hasta cerca de Betania y, alzando sus manos, los bendijo. Y sucedió que, mientras los bendecía, se separó de ellos y fue llevado al cielo.»</span>
     </div>
+
+    <div class="separador">✦ ✦ ✦</div>
+
+    <div class="seccion-titulo">Introducción — La coronación que ocurrió en dos actos</div>
+
+    <p>La coronación de Jesús <b>no ocurrió en el pretorio</b>. Lo que ocurrió allí fue la <b>sombra profética</b> — el ensayo terrenal de lo que el cielo ejecutaría después.</p>
+
+    <p>Los soldados pusieron sobre Jesús cada símbolo de una coronación real: corona, manto, cetro, reverencia, proclamación y herencia. Pero esos fueron los símbolos. <b>La coronación verdadera ocurrió cuando ascendió al Padre.</b></p>
+
+    <p><span class="verso-ref">Hechos 1:9</span></p>
+    <span class="verso-text">«Viéndolo ellos, fue alzado, y lo recibió una nube que lo ocultó de sus ojos.»</span>
+
+    <p><span class="verso-ref">Filipenses 2:9</span></p>
+    <span class="verso-text">«Por lo cual Dios también lo exaltó hasta lo sumo, y le dio un nombre que es sobre todo nombre.»</span>
+
+    <p><span class="verso-ref">Hebreos 1:3</span></p>
+    <span class="verso-text">«...se sentó a la diestra de la Majestad en las alturas.»</span>
+
+    <div class="tesis-central">
+      En la tierra, los hombres le pusieron símbolos de burla.<br>
+      En el cielo, el Padre los convirtió en realidad eterna.<br>
+      Cada objeto de humillación fue la sombra<br>
+      de lo que se consumó cuando llegó al trono.
+    </div>
+
+    <div class="separador">✦ ✦ ✦</div>
+
+    <!-- I -->
+    <div class="seccion-titulo"><span class="seccion-numero">I.</span> La Corona de Espinas</div>
+    <div class="seccion-sub">Símbolo: la maldición sobre su cabeza → Realidad: coronado de gloria</div>
+
+    <span class="detalle-label">🔍 En la tierra:</span>
+    <p>Los soldados trenzaron espinos y los pusieron sobre su cabeza.</p>
+    <p><span class="verso-ref">Mateo 27:29</span></p>
+    <span class="verso-text">«Y pusieron sobre su cabeza una corona tejida de espinas.»</span>
+
+    <span class="detalle-label">💎 Lo escondido:</span>
+    <p>En Génesis, cuando Adán cayó, la tierra produjo <i>espinos</i> como fruto de la maldición. Los mismos espinos fueron puestos sobre Jesús. <b>Él cargó el fruto de la maldición</b> para que no llegara a ti.</p>
+    <p><span class="verso-ref">Génesis 3:17-18</span></p>
+    <span class="verso-text">«Maldita será la tierra por tu causa... espinos y cardos te producirá.»</span>
+
+    <span class="detalle-label">👑 En el cielo:</span>
+    <p>La corona de espinas fue reemplazada. Lo que en la tierra fue maldición, en el cielo se convirtió en majestad.</p>
+    <p><span class="verso-ref">Hebreos 2:9</span></p>
+    <span class="verso-text">«Pero vemos a aquel que fue hecho un poco menor que los ángeles, a Jesús, coronado de gloria y de honra.»</span>
+
+    <span class="detalle-label">⚡ Impacto:</span>
+    <div class="punto-impacto">La maldición ya fue cargada — no te corresponde a ti llevarla</div>
+    <div class="punto-impacto">Lo que te hiere no tiene la última palabra</div>
+    <p><span class="verso-ref">Isaías 61:3</span></p>
+    <span class="verso-text">«...ordenar que se dé gloria en lugar de ceniza, óleo de gozo en lugar de luto, manto de alegría en lugar del espíritu angustiado.»</span>
+
+    <div class="para-recordar">✦ «En la tierra le pusieron espinas. En el cielo, el Padre le puso gloria. Y lo que Él lleva, tú lo heredas.»</div>
+
+    <div class="separador">✦ ✦ ✦</div>
+
+    <!-- II -->
+    <div class="seccion-titulo"><span class="seccion-numero">II.</span> El Manto Púrpura</div>
+    <div class="seccion-sub">Símbolo: parodia de realeza → Realidad: investido con majestad eterna</div>
+
+    <span class="detalle-label">🔍 En la tierra:</span>
+    <p>Lo vistieron con un manto escarlata como burla de rey.</p>
+    <p><span class="verso-ref">Mateo 27:28</span></p>
+    <span class="verso-text">«Y desnudándole, le echaron encima un manto de escarlata.»</span>
+
+    <span class="detalle-label">💎 Lo escondido:</span>
+    <p>Jacob profetizó que el cetro no se apartaría de Judá. El púrpura era color de reyes. Los soldados, sin saberlo, cumplían el protocolo de investidura real. Después le devolvieron sus ropas — porque <b>su realeza no dependía de un manto prestado</b>.</p>
+    <p><span class="verso-ref">Génesis 49:10</span></p>
+    <span class="verso-text">«No será quitado el cetro de Judá, ni el legislador de entre sus pies, hasta que venga Siloh.»</span>
+
+    <span class="detalle-label">👑 En el cielo:</span>
+    <p>No necesitó que nadie lo vistiera. El manto de burla fue la sombra del manto de majestad que el Padre le vistió.</p>
+    <p><span class="verso-ref">Salmo 93:1</span></p>
+    <span class="verso-text">«Jehová reina; se vistió de magnificencia; Jehová se vistió, se ciñó de poder.»</span>
+    <p><span class="verso-ref">Daniel 7:14</span></p>
+    <span class="verso-text">«Y le fue dado dominio, gloria y reino, para que todos los pueblos, naciones y lenguas le sirvieran.»</span>
+
+    <span class="detalle-label">⚡ Impacto:</span>
+    <div class="punto-impacto">Tu identidad no depende de lo que el mundo te ponga o te quite</div>
+    <p><span class="verso-ref">Isaías 61:10</span></p>
+    <span class="verso-text">«Me vistió con vestiduras de salvación, me rodeó de manto de justicia.»</span>
+
+    <div class="para-recordar">✦ «En la tierra lo vistieron de burla. En el cielo, el Padre lo vistió de majestad. Y a ti te vistió de justicia.»</div>
+
+    <div class="separador">✦ ✦ ✦</div>
+
+    <!-- III -->
+    <div class="seccion-titulo"><span class="seccion-numero">III.</span> La Caña en Su Mano</div>
+    <div class="seccion-sub">Símbolo: un palo de burla → Realidad: toda potestad entregada</div>
+
+    <span class="detalle-label">🔍 En la tierra:</span>
+    <p>Le pusieron una caña como parodia de cetro. Después lo golpearon con ella.</p>
+    <p><span class="verso-ref">Mateo 27:29-30</span></p>
+    <span class="verso-text">«Y pusieron una caña en su mano derecha... y le quitaron la caña, y le golpeaban en la cabeza.»</span>
+
+    <span class="detalle-label">💎 Lo escondido:</span>
+    <p>La misma mano que sostuvo esa caña sostenía los universos. Le dieron un palo sin saber que <b>toda autoridad ya estaba en sus manos</b>.</p>
+    <p><span class="verso-ref">Hebreos 1:3</span></p>
+    <span class="verso-text">«...sustentando todas las cosas con la palabra de su poder.»</span>
+
+    <span class="detalle-label">👑 En el cielo:</span>
+    <p>La caña fue reemplazada por el cetro eterno.</p>
+    <p><span class="verso-ref">Mateo 28:18</span></p>
+    <span class="verso-text">«Toda potestad me es dada en el cielo y en la tierra.»</span>
+    <p><span class="verso-ref">Salmo 110:2</span></p>
+    <span class="verso-text">«Jehová enviará desde Sion la vara de tu poder; domina en medio de tus enemigos.»</span>
+
+    <span class="detalle-label">⚡ Impacto:</span>
+    <div class="punto-impacto">Lo que el enemigo usa contra ti, Dios lo convierte en autoridad a tu favor</div>
+    <p><span class="verso-ref">Lucas 10:19</span></p>
+    <span class="verso-text">«He aquí os doy potestad de hollar serpientes y escorpiones, y sobre toda fuerza del enemigo, y nada os dañará.»</span>
+
+    <div class="para-recordar">✦ «En la tierra le dieron un palo. En el cielo, el Padre le dio toda potestad. Y esa potestad ahora opera en ti.»</div>
+
+    <div class="separador">✦ ✦ ✦</div>
+
+    <!-- IV -->
+    <div class="seccion-titulo"><span class="seccion-numero">IV.</span> La Rodilla que se Dobló Primero</div>
+    <div class="seccion-sub">Símbolo: reverencia sarcástica → Realidad: toda rodilla se dobla de verdad</div>
+
+    <span class="detalle-label">🔍 En la tierra:</span>
+    <p>Los soldados se arrodillaron burlándose.</p>
+    <p><span class="verso-ref">Mateo 27:29</span></p>
+    <span class="verso-text">«E hincando la rodilla delante de él, le escarnecían, diciendo: ¡Salve, Rey de los judíos!»</span>
+
+    <span class="detalle-label">💎 Lo escondido:</span>
+    <p>Fueron <b>los primeros en cumplir</b> lo que todo el universo haría después. La diferencia entre su burla y la adoración celestial fue solo la intención — <b>pero la rodilla se dobló igual</b>.</p>
+
+    <span class="detalle-label">👑 En el cielo:</span>
+    <p>Lo que los soldados hicieron por desprecio, los ángeles lo hicieron por revelación.</p>
+    <p><span class="verso-ref">Filipenses 2:10-11</span></p>
+    <span class="verso-text">«Para que en el nombre de Jesús se doble toda rodilla de los que están en los cielos, y en la tierra, y debajo de la tierra; y toda lengua confiese que Jesucristo es el Señor, para gloria de Dios Padre.»</span>
+
+    <span class="detalle-label">⚡ Impacto:</span>
+    <div class="punto-impacto">Lo que hoy se burla de tu fe, un día se arrodillará ante lo que tú ya adoraste</div>
+    <div class="punto-impacto">Tu adoración voluntaria hoy vale más que toda rodilla forzada mañana</div>
+
+    <div class="para-recordar">✦ «En la tierra se arrodillaron para burlarse. En el cielo, el universo se arrodilló para adorar. Tu rodilla voluntaria es la que Él siempre esperó.»</div>
+
+    <div class="separador">✦ ✦ ✦</div>
+
+    <!-- V -->
+    <div class="seccion-titulo"><span class="seccion-numero">V.</span> El Letrero de Pilato</div>
+    <div class="seccion-sub">Símbolo: un cartel de condena → Realidad: un nombre sobre todo nombre</div>
+
+    <span class="detalle-label">🔍 En la tierra:</span>
+    <p>Pilato puso un letrero sobre la cruz en tres idiomas.</p>
+    <p><span class="verso-ref">Juan 19:19-20</span></p>
+    <span class="verso-text">«Escribió también Pilato un título, que puso sobre la cruz, el cual decía: JESÚS NAZARENO, REY DE LOS JUDÍOS. Y estaba escrito en hebreo, en griego y en latín.»</span>
+
+    <span class="detalle-label">💎 Lo escondido:</span>
+    <p>Hebreo, griego y latín: la religión, la cultura y el poder. Sin saberlo, <b>proclamó su reinado a toda la tierra</b>. Cuando los líderes protestaron, Pilato emitió un decreto irrevocable sin poder retractarse.</p>
+    <p><span class="verso-ref">Juan 19:22</span></p>
+    <span class="verso-text">«Respondió Pilato: Lo que he escrito, he escrito.»</span>
+
+    <span class="detalle-label">👑 En el cielo:</span>
+    <p>El letrero fue la sombra del nombre eterno. Lo que Pilato escribió en un madero, el Padre lo escribió en la eternidad.</p>
+    <p><span class="verso-ref">Filipenses 2:9</span></p>
+    <span class="verso-text">«Por lo cual Dios también lo exaltó hasta lo sumo, y le dio un nombre que es sobre todo nombre.»</span>
+
+    <span class="detalle-label">⚡ Impacto:</span>
+    <div class="punto-impacto">Lo que Dios escribe sobre ti es irrevocable</div>
+    <div class="punto-impacto">Hasta los que se oponen a Dios terminan declarando sus verdades</div>
+
+    <div class="para-recordar">✦ «En la tierra, un gobernador escribió su título en un madero. En el cielo, el Padre escribió su nombre sobre toda la creación. Y sobre ti escribió: hijo, hija.»</div>
+
+    <div class="separador">✦ ✦ ✦</div>
+
+    <!-- VI -->
+    <div class="seccion-titulo"><span class="seccion-numero">VI.</span> Los Dados Sobre Su Ropa</div>
+    <div class="seccion-sub">Símbolo: soldados repartiendo despojos → Realidad: el Rey repartiendo herencia</div>
+
+    <span class="detalle-label">🔍 En la tierra:</span>
+    <p>Cuatro soldados echaron suertes sobre su ropa.</p>
+    <p><span class="verso-ref">Juan 19:23-24</span></p>
+    <span class="verso-text">«Cuando los soldados hubieron crucificado a Jesús, tomaron sus vestidos... La túnica era sin costura, de un solo tejido de arriba abajo. Entonces dijeron entre sí: No la partamos, sino echemos suertes.»</span>
+
+    <span class="detalle-label">💎 Lo escondido:</span>
+    <p>Mil años antes, David lo escribió. Los soldados cumplieron la profecía <b>sin haber leído jamás las Escrituras</b>. Y la túnica sin costura era la del Sumo Sacerdote: <b>indivisible, eterna, completa</b>.</p>
+    <p><span class="verso-ref">Salmo 22:18</span></p>
+    <span class="verso-text">«Repartieron entre sí mis vestidos, y sobre mi ropa echaron suertes.»</span>
+
+    <span class="detalle-label">👑 En el cielo:</span>
+    <p>En la tierra le quitaron todo. En el cielo, <b>Él es quien reparte</b>.</p>
+    <p><span class="verso-ref">Efesios 4:8</span></p>
+    <span class="verso-text">«Subiendo a lo alto, llevó cautiva la cautividad, y dio dones a los hombres.»</span>
+    <p><span class="verso-ref">Apocalipsis 3:21</span></p>
+    <span class="verso-text">«Al que venciere, le daré que se siente conmigo en mi trono, así como yo he vencido, y me he sentado con mi Padre en su trono.»</span>
+
+    <span class="detalle-label">⚡ Impacto:</span>
+    <div class="punto-impacto">Su sacerdocio no fue roto — tu acceso al Padre es completo</div>
+    <p><span class="verso-ref">Hebreos 4:16</span></p>
+    <span class="verso-text">«Acerquémonos, pues, confiadamente al trono de la gracia, para alcanzar misericordia y hallar gracia para el oportuno socorro.»</span>
+    <div class="punto-impacto">Él subió al trono para repartirlo contigo</div>
+    <p><span class="verso-ref">Romanos 8:17</span></p>
+    <span class="verso-text">«Y si hijos, también herederos; herederos de Dios y coherederos con Cristo.»</span>
+
+    <div class="para-recordar">✦ «En la tierra le quitaron todo. En el cielo, Él da todo. Los soldados repartieron despojos — Él reparte herencia. Y tú eres coheredero.»</div>
+
+    <div class="separador">✦ ✦ ✦</div>
+
+    <!-- CONCLUSIÓN -->
+    <div class="conclusion-box">
+      <div class="conclusion-titulo">Conclusión — De la Sombra a la Realidad</div>
+
+      <br>
+      <div class="punto-impacto"><b>Corona de espinas</b> → <b>Corona de gloria</b></div>
+      <div class="punto-impacto"><b>Manto de burla</b> → <b>Vestido de majestad</b></div>
+      <div class="punto-impacto"><b>Caña de palo</b> → <b>Toda potestad</b></div>
+      <div class="punto-impacto"><b>Rodilla sarcástica</b> → <b>Toda rodilla en adoración</b></div>
+      <div class="punto-impacto"><b>Letrero de condena</b> → <b>Nombre sobre todo nombre</b></div>
+      <div class="punto-impacto"><b>Despojos repartidos</b> → <b>Herencia repartida</b></div>
+
+      <br>
+      <p>Seis símbolos en el pretorio. Seis realidades consumadas en el trono.</p>
+
+      <div class="cielo-box">
+        Cuando Jesús ascendió al Padre <span class="verso-ref">(Lucas 24:51)</span>,<br>
+        no fue llevado al cielo como víctima — fue recibido como <b>Rey</b>.<br>
+        Se sentó a la diestra de la Majestad <span class="verso-ref">(Hebreos 1:3)</span>,<br>
+        y todo lo que los hombres le pusieron en burla,<br>
+        <b>el Padre se lo puso en gloria.</b>
+      </div>
+
+      <br>
+      <div class="para-recordar">
+        <b>Cierre:</b> Si Dios pudo tomar seis actos de burla y convertirlos en la coronación más poderosa de la historia... ¿qué no podrá hacer con lo que tú estás atravesando hoy?
+      </div>
+
+      <br>
+      <p><span class="verso-ref">Filipenses 2:9-11</span></p>
+      <span class="verso-text">«Por lo cual Dios también lo exaltó hasta lo sumo, y le dio un nombre que es sobre todo nombre, para que en el nombre de Jesús se doble toda rodilla de los que están en los cielos, y en la tierra, y debajo de la tierra; y toda lengua confiese que Jesucristo es el Señor, para gloria de Dios Padre.»</span>
+    </div>
+
+  </div>
+
+  <!-- ==================== TAB MINIMALISTA ==================== -->
+  <div class="content tab-content" contenteditable="true" spellcheck="true" id="tab-minimal">
 
     <div class="titulo-principal">Una Corona, Una Victoria</div>
     <div class="subtitulo">Los símbolos que la tierra no entendió y el cielo consumó</div>
 
     <div class="separador">✦ ✦ ✦</div>
 
-    <div class="seccion-titulo"><span class="seccion-numero">V.</span> El Letrero de Pilato</div>
-    <div class="seccion-sub">Símbolo: cartel de condena → Realidad: Nombre sobre todo nombre</div>
-    <span class="verso-ref">Juan 19:19</span>
-    <span class="verso-text">«JESÚS NAZARENO, REY DE LOS JUDÍOS. Estaba escrito en hebreo, griego y latín.»</span>
-    <p>Pilato escribió un título para burlarse, pero terminó publicando el reinado de Cristo en los idiomas de la religión, la cultura y el poder. Lo que el hombre escribió en madera, el Padre lo escribió en la eternidad.</p>
+    <p>La coronación de Jesús no ocurrió en el pretorio — ocurrió cuando ascendió al Padre. Lo que pasó en la tierra fue la sombra profética. Los soldados, sin saberlo, ensayaron la ceremonia que el cielo consumaría.</p>
 
-    <div class="seccion-titulo"><span class="seccion-numero">VI.</span> Los Dados y la Ropa</div>
-    <div class="seccion-sub">Símbolo: soldados repartiendo despojos → Realidad: El Rey repartiendo herencia</div>
-    <span class="verso-ref">Juan 19:23-24</span>
-    <span class="verso-text">«No la partamos, sino echemos suertes... para que se cumpliese la Escritura.»</span>
-    <p>En la tierra le quitaron todo. En el cielo, al sentarse en el trono, Él se convirtió en el dador de dones. Los soldados se quedaron con telas; nosotros nos quedamos con Su justicia.</p>
-
-    <div class="para-recordar">✦ «En la tierra le quitaron Su ropa para burlarse. En el cielo, Él nos vistió con ropas de salvación.»</div>
-  </div>
-
-  <div class="content tab-content" contenteditable="true" id="tab-minimal">
-    <div class="buena-noticia">
-        ¡Su victoria es tu victoria! La maldición se detuvo en Su cabeza para que la bendición fluyera sobre la tuya.
-    </div>
-    
-    <div class="titulo-principal" style="font-size: 26px;">Una Corona, Una Victoria</div>
-    
-    <div style="margin-top:20px">
-      <h3 style="color:var(--crimson)">I. La Corona</h3>
-      <span class="verso-ref">Génesis 3:18 / Mateo 27:29</span>
-      <span class="verso-text">«Espinos y cardos te producirá... pusieron sobre su cabeza una corona de espinas.»</span>
-      
-      <h3 style="color:var(--crimson)">V. El Letrero</h3>
-      <span class="verso-ref">Juan 19:19 / Filipenses 2:9</span>
-      <span class="verso-text">«Lo que he escrito, he escrito... un nombre que es sobre todo nombre.»</span>
-
-      <h3 style="color:var(--crimson)">VI. La Herencia</h3>
-      <span class="verso-ref">Salmo 22:18 / Efesios 4:8</span>
-      <span class="verso-text">«Repartieron mis vestidos... subiendo a lo alto, dio dones a los hombres.»</span>
-    </div>
-  </div>
-
-  <div class="content tab-content" id="tab-presentacion">
-    <div class="buena-noticia" style="background: var(--gold-glow); border-style: solid;">
-      <h2 style="color:var(--gold); font-family: 'Playfair Display'; margin-bottom: 10px;">BUENA NOTICIA</h2>
-      ¡Cristo transformó los instrumentos de tortura en insignias de Su Reino! Tu proceso actual es solo el ensayo de tu victoria.
-    </div>
-
-    <div class="titulo-principal">UNA CORONA, UNA VICTORIA</div>
     <div class="separador">✦</div>
 
-    <div class="pres-box">
-      <div class="verso-ref">Hebreos 2:9 / Mateo 27:29</div>
-      <ul class="pres-bullet">
-        <li><b>La Corona:</b> La maldición termina en la Cruz; la Gloria comienza en el Trono.</li>
-        <li><b>El Intercambio:</b> Él llevó mis espinas para darme Su honra.</li>
-      </ul>
+    <div class="min-section">
+      <div class="min-title">I. La Corona de Espinas</div>
+      <div class="min-sub">Maldición en la tierra <span class="min-arrow">→</span> Gloria en el cielo</div>
+      <div class="min-body">Los espinos nacieron de la maldición de Adán <span class="verso-ref">(Gn 3:17-18)</span>. Esos mismos espinos fueron puestos sobre Jesús <span class="verso-ref">(Mt 27:29)</span>. Él cargó el fruto de la maldición. Cuando ascendió, la corona cambió: <b>coronado de gloria y de honra</b> <span class="verso-ref">(He 2:9)</span>.</div>
+      <div class="min-frase">«Le pusieron espinas. El Padre le puso gloria. Y lo que Él lleva, tú lo heredas.»</div>
     </div>
 
-    <div class="pres-box">
-      <div class="verso-ref">Filipenses 2:9-11</div>
-      <ul class="pres-bullet">
-        <li><b>El Nombre:</b> Por encima de cualquier diagnóstico, deuda o duda.</li>
-        <li><b>El Decreto:</b> Lo que Dios ha escrito sobre ti es irrevocable.</li>
-      </ul>
+    <div class="min-section">
+      <div class="min-title">II. El Manto Púrpura</div>
+      <div class="min-sub">Parodia en la tierra <span class="min-arrow">→</span> Majestad en el cielo</div>
+      <div class="min-body">Lo vistieron de escarlata como burla <span class="verso-ref">(Mt 27:28)</span>, pero cumplían la profecía de Judá <span class="verso-ref">(Gn 49:10)</span>. Su realeza no dependía de un manto prestado. En el cielo, <b>se vistió de magnificencia</b> <span class="verso-ref">(Sal 93:1)</span> y le fue dado dominio y reino <span class="verso-ref">(Dn 7:14)</span>.</div>
+      <div class="min-frase">«Lo vistieron de burla. El Padre lo vistió de majestad. Y a ti te vistió de justicia.»</div>
     </div>
 
-    <div class="pres-box">
-        <div class="verso-ref">Romanos 8:17</div>
-        <ul class="pres-bullet">
-          <li><b>La Herencia:</b> No somos espectadores de Su victoria, somos coherederos de ella.</li>
-        </ul>
+    <div class="min-section">
+      <div class="min-title">III. La Caña en Su Mano</div>
+      <div class="min-sub">Palo de burla en la tierra <span class="min-arrow">→</span> Toda potestad en el cielo</div>
+      <div class="min-body">Le dieron una caña como cetro falso y lo golpearon con ella <span class="verso-ref">(Mt 27:29-30)</span>. La misma mano sustentaba todas las cosas <span class="verso-ref">(He 1:3)</span>. En el cielo declaró: <b>«Toda potestad me es dada»</b> <span class="verso-ref">(Mt 28:18)</span>.</div>
+      <div class="min-frase">«Le dieron un palo. El Padre le dio toda potestad. Y esa potestad opera en ti.»</div>
     </div>
+
+    <div class="min-section">
+      <div class="min-title">IV. La Rodilla Doblada</div>
+      <div class="min-sub">Sarcasmo en la tierra <span class="min-arrow">→</span> Adoración en el cielo</div>
+      <div class="min-body">Se arrodillaron burlándose: «¡Salve, Rey!» <span class="verso-ref">(Mt 27:29)</span>. Fueron los primeros en cumplir la profecía — la rodilla se dobló igual. En el cielo se cumplió en plenitud: <b>toda rodilla se dobla</b> y <b>toda lengua confiesa</b> <span class="verso-ref">(Fil 2:10-11)</span>.</div>
+      <div class="min-frase">«Se arrodillaron para burlarse. El universo se arrodilló para adorar. Tu rodilla voluntaria es la que Él esperó.»</div>
+    </div>
+
+    <div class="min-section">
+      <div class="min-title">V. El Letrero de Pilato</div>
+      <div class="min-sub">Condena en la tierra <span class="min-arrow">→</span> Nombre eterno en el cielo</div>
+      <div class="min-body">Pilato escribió «Rey de los Judíos» en hebreo, griego y latín <span class="verso-ref">(Jn 19:19-20)</span> — religión, cultura y poder. Cuando le pidieron cambiarlo: <b>«Lo que he escrito, he escrito»</b> <span class="verso-ref">(Jn 19:22)</span>. En el cielo, el Padre le dio <b>un nombre sobre todo nombre</b> <span class="verso-ref">(Fil 2:9)</span>.</div>
+      <div class="min-frase">«Un gobernador escribió su título en un madero. El Padre lo escribió en la eternidad. Y sobre ti escribió: hijo, hija.»</div>
+    </div>
+
+    <div class="min-section">
+      <div class="min-title">VI. Los Dados Sobre Su Ropa</div>
+      <div class="min-sub">Despojos en la tierra <span class="min-arrow">→</span> Herencia desde el cielo</div>
+      <div class="min-body">Soldados echaron suertes sobre su túnica sin costura <span class="verso-ref">(Jn 19:23-24)</span>, cumpliendo el Salmo 22:18 sin saberlo. La túnica sacerdotal no fue rota — su sacerdocio es indivisible. En el cielo, Él reparte: <b>dio dones a los hombres</b> <span class="verso-ref">(Ef 4:8)</span> y comparte su trono <span class="verso-ref">(Ap 3:21)</span>. Tú eres <b>coheredero</b> <span class="verso-ref">(Ro 8:17)</span>.</div>
+      <div class="min-frase">«Le quitaron todo. En el cielo, Él da todo. Repartieron despojos — Él reparte herencia.»</div>
+    </div>
+
+    <div class="min-conclusion">
+      <div class="min-title" style="text-align:center;">De la Sombra a la Realidad</div>
+      <br>
+      <p style="text-align:center; font-size:15px; line-height:1.8;">
+        Espinas <span class="min-arrow">→</span> Gloria &nbsp;·&nbsp;
+        Manto <span class="min-arrow">→</span> Majestad &nbsp;·&nbsp;
+        Caña <span class="min-arrow">→</span> Potestad<br>
+        Rodilla <span class="min-arrow">→</span> Adoración &nbsp;·&nbsp;
+        Letrero <span class="min-arrow">→</span> Nombre eterno &nbsp;·&nbsp;
+        Dados <span class="min-arrow">→</span> Herencia
+      </p>
+      <br>
+      <p style="text-align:center; font-style:italic; color:var(--ink-light);">Cuando ascendió al Padre, no fue llevado como víctima — fue recibido como Rey.<br>Todo lo que los hombres le pusieron en burla, <b>el Padre se lo puso en gloria.</b></p>
+      <br>
+      <p style="text-align:center; color:var(--gold); font-family:'Playfair Display',serif; font-size:14px;">Si Dios convirtió seis burlas en coronación... ¿qué no hará con lo que tú estás atravesando hoy?</p>
+    </div>
+
   </div>
+
 </div>
 
 <script>
-  function switchTab(tabId) {
-    document.querySelectorAll('.tab-btn').forEach(btn => btn.classList.remove('active'));
-    document.querySelectorAll('.tab-content').forEach(content => content.classList.remove('active'));
-    
-    event.currentTarget.classList.add('active');
-    document.getElementById('tab-' + tabId).classList.add('active');
-  }
-
   function execCmd(cmd) { document.execCommand(cmd, false, null); }
   function execCmdVal(cmd, val) { document.execCommand(cmd, false, val); }
+  function changeFontSize(size) {
+    const sel = window.getSelection();
+    if (sel.rangeCount && !sel.isCollapsed) {
+      const range = sel.getRangeAt(0);
+      const span = document.createElement('span');
+      span.style.fontSize = size + 'px';
+      range.surroundContents(span);
+    } else {
+      document.querySelectorAll('.content').forEach(c => c.style.fontSize = size + 'px');
+    }
+  }
+  function togglePresentation() {
+    document.body.classList.toggle('presentation-mode');
+    const btn = document.getElementById('presBtn');
+    btn.classList.toggle('active');
+    btn.textContent = document.body.classList.contains('presentation-mode') ? '📋' : '📺';
+  }
+  function switchTab(tab) {
+    document.querySelectorAll('.tab-content').forEach(t => t.classList.remove('active'));
+    document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
+    document.getElementById('tab-' + tab).classList.add('active');
+    event.target.classList.add('active');
+  }
+  document.addEventListener('keydown', function(e) {
+    if (e.ctrlKey || e.metaKey) {
+      switch(e.key.toLowerCase()) {
+        case 'b': e.preventDefault(); execCmd('bold'); break;
+        case 'i': e.preventDefault(); execCmd('italic'); break;
+        case 'u': e.preventDefault(); execCmd('underline'); break;
+        case 'p': e.preventDefault(); window.print(); break;
+      }
+    }
+  });
 </script>
-
 </body>
 </html>
