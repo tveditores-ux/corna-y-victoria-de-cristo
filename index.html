@@ -1,0 +1,283 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Una Corona, Una Victoria</title>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,700;0,900;1,400;1,700&family=Lora:ital,wght@0,400;0,500;0,600;0,700;1,400;1,500&family=Dancing+Script:wght@400;700&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --parchment: #faf6f0;
+    --ink: #2c1810;
+    --ink-light: #5a3e2b;
+    --gold: #b8860b;
+    --gold-light: #d4a830;
+    --gold-glow: rgba(184, 134, 11, 0.15);
+    --crimson: #8b1a1a;
+    --crimson-light: #a02020;
+    --red-letter: #b91c1c;
+    --shadow: rgba(44, 24, 16, 0.08);
+  }
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  body {
+    background: #e8e0d0;
+    background-image:
+      radial-gradient(ellipse at 20% 50%, rgba(184,134,11,0.05) 0%, transparent 50%),
+      radial-gradient(ellipse at 80% 20%, rgba(139,26,26,0.03) 0%, transparent 50%);
+    min-height: 100vh;
+    font-family: 'Lora', Georgia, serif;
+    color: var(--ink);
+    padding: 20px;
+  }
+
+  /* Toolbar */
+  .toolbar {
+    position: sticky; top: 0; z-index: 100; max-width: 800px; margin: 0 auto 0;
+    background: linear-gradient(135deg, #2c1810 0%, #3d2518 100%);
+    border-radius: 12px 12px 0 0; padding: 10px 16px;
+    display: flex; flex-wrap: wrap; gap: 4px; align-items: center;
+    box-shadow: 0 4px 20px rgba(0,0,0,0.3);
+  }
+  .toolbar-group {
+    display: flex; gap: 2px; align-items: center; padding: 0 6px;
+    border-right: 1px solid rgba(255,255,255,0.1);
+  }
+  .toolbar-group:last-child { border-right: none; }
+  .toolbar button {
+    background: transparent; border: none; color: #d4c4a8;
+    width: 34px; height: 34px; border-radius: 6px; cursor: pointer;
+    font-size: 14px; display: flex; align-items: center; justify-content: center;
+    transition: all 0.2s; font-family: 'Lora', serif; position: relative;
+  }
+  .toolbar button:hover { background: rgba(255,255,255,0.12); color: var(--gold-light); }
+  .toolbar select {
+    background: rgba(255,255,255,0.08); border: 1px solid rgba(255,255,255,0.15);
+    color: #d4c4a8; padding: 4px 8px; border-radius: 6px; font-size: 12px;
+    font-family: 'Lora', serif; cursor: pointer; outline: none;
+  }
+  .color-dot {
+    width: 16px; height: 16px; border-radius: 50%;
+    border: 2px solid rgba(255,255,255,0.2); cursor: pointer; transition: transform 0.2s;
+  }
+
+  /* Tabs */
+  .tab-bar {
+    max-width: 800px; margin: 0 auto; display: flex;
+    background: #3d2518; border-top: 1px solid rgba(255,255,255,0.08);
+  }
+  .tab-btn {
+    flex: 1; padding: 10px 16px; background: transparent; border: none;
+    color: #a08060; font-family: 'Playfair Display', serif; font-size: 14px;
+    cursor: pointer; transition: all 0.2s; letter-spacing: 0.5px;
+    border-bottom: 3px solid transparent;
+  }
+  .tab-btn.active { color: var(--gold-light); border-bottom-color: var(--gold); background: rgba(184,134,11,0.08); }
+
+  /* Notebook */
+  .notebook {
+    max-width: 800px; margin: 0 auto; background: var(--parchment); min-height: 90vh;
+    box-shadow: 0 0 0 1px rgba(0,0,0,0.05), 4px 4px 20px var(--shadow),
+      8px 8px 40px rgba(0,0,0,0.06), inset 0 0 80px rgba(0,0,0,0.02);
+    border-radius: 0 0 4px 4px; position: relative; overflow: hidden;
+  }
+  .spine { position: absolute; left: 0; top: 0; bottom: 0; width: 40px; z-index: 3; pointer-events: none; }
+  .spine-hole {
+    width: 18px; height: 18px; background: #e8e0d0; border-radius: 50%;
+    position: absolute; left: 12px; box-shadow: inset 0 2px 4px rgba(0,0,0,0.15);
+  }
+  .content {
+    position: relative; z-index: 5; padding: 40px 50px 60px 70px;
+    outline: none; line-height: 32px; font-size: 16px; min-height: 80vh;
+  }
+
+  .tab-content { display: none; }
+  .tab-content.active { display: block; }
+
+  /* Typography */
+  .titulo-principal {
+    font-family: 'Playfair Display', serif; font-size: 38px; font-weight: 900;
+    color: var(--crimson); text-align: center; margin-bottom: 4px; line-height: 1.2; letter-spacing: 1px;
+  }
+  .subtitulo { font-family: 'Dancing Script', cursive; font-size: 20px; color: var(--gold); text-align: center; margin-bottom: 24px; }
+
+  .verso-ref {
+    color: var(--red-letter); font-weight: 700; font-size: 13px;
+    font-family: 'Playfair Display', serif; letter-spacing: 0.3px;
+  }
+  .verso-text {
+    color: var(--red-letter); font-style: italic; font-size: 15px;
+    line-height: 1.6; display: block; margin: 6px 0 10px 0;
+    padding: 8px 14px; border-left: 3px solid var(--red-letter);
+    background: rgba(185, 28, 28, 0.04); border-radius: 0 6px 6px 0;
+  }
+
+  .texto-base {
+    text-align: center; color: var(--ink-light); font-size: 14px;
+    margin-bottom: 8px; padding: 10px 20px;
+    border-left: 3px solid var(--gold); border-right: 3px solid var(--gold);
+    display: inline-block; width: 100%; background: var(--gold-glow); border-radius: 4px;
+  }
+  .separador { text-align: center; margin: 28px 0; color: var(--gold); font-size: 18px; letter-spacing: 12px; }
+  .seccion-titulo { font-family: 'Playfair Display', serif; font-size: 22px; font-weight: 700; color: var(--crimson); margin-top: 28px; margin-bottom: 4px; }
+  .seccion-numero { font-family: 'Dancing Script', cursive; font-size: 42px; color: var(--gold); font-weight: 700; line-height: 1; display: inline-block; margin-right: 8px; vertical-align: middle; }
+  .seccion-sub { color: var(--gold); font-style: italic; font-size: 14px; margin-bottom: 10px; }
+  .para-recordar {
+    background: linear-gradient(135deg, var(--gold-glow), rgba(184,134,11,0.06));
+    border-left: 4px solid var(--gold); padding: 12px 16px; margin: 16px 0;
+    border-radius: 0 8px 8px 0; font-style: italic; font-family: 'Playfair Display', serif;
+    font-size: 15px; color: var(--ink-light);
+  }
+  .punto-impacto { padding-left: 20px; position: relative; margin: 6px 0; }
+  .punto-impacto::before { content: '✦'; position: absolute; left: 0; color: var(--gold); font-size: 10px; top: 2px; }
+
+  /* BUENA NOTICIA STYLE */
+  .buena-noticia {
+    background: linear-gradient(to dotted, var(--gold-glow), transparent);
+    border: 2px dashed var(--gold); border-radius: 12px;
+    padding: 18px; margin-bottom: 30px; position: relative;
+    text-align: center; font-family: 'Lora', serif; font-style: italic;
+  }
+  .buena-noticia-label {
+    position: absolute; top: -12px; left: 50%; transform: translateX(-50%);
+    background: var(--gold); color: white; padding: 2px 12px; border-radius: 20px;
+    font-size: 11px; font-weight: 700; letter-spacing: 1px; text-transform: uppercase;
+  }
+
+  /* Presentation Tab specific */
+  .pres-box { margin-bottom: 25px; padding: 15px; border-bottom: 1px solid var(--gold-glow); }
+  .pres-bullet { list-style: none; padding-left: 10px; border-left: 2px solid var(--crimson); margin: 10px 0; font-size: 18px;}
+
+</style>
+</head>
+<body id="main-body">
+
+<div class="toolbar">
+  <div class="toolbar-group">
+    <select onchange="document.execCommand('fontSize', false, this.value)">
+      <option value="3">14</option><option value="4" selected>16</option>
+      <option value="5">18</option>
+    </select>
+  </div>
+  <div class="toolbar-group">
+    <button onclick="document.execCommand('bold')"><b>N</b></button>
+    <button onclick="document.execCommand('italic')"><i>I</i></button>
+    <button onclick="document.execCommand('underline')"><u>S</u></button>
+  </div>
+  <div class="toolbar-group">
+    <button onclick="window.print()">🖨</button>
+  </div>
+</div>
+
+<div class="tab-bar">
+  <button class="tab-btn active" onclick="switchTab('completo')">✦ Completo</button>
+  <button class="tab-btn" onclick="switchTab('minimal')">◇ Minimalista</button>
+  <button class="tab-btn" onclick="switchTab('presentacion')">📺 Presentación</button>
+</div>
+
+<div class="notebook">
+  <div class="spine">
+    <div class="spine-hole" style="top:60px"></div>
+    <div class="spine-hole" style="top:180px"></div>
+    <div class="spine-hole" style="top:400px"></div>
+    <div class="spine-hole" style="top:620px"></div>
+    <div class="spine-hole" style="top:840px"></div>
+  </div>
+
+  <div class="content tab-content active" contenteditable="true" id="tab-completo">
+    
+    <div class="buena-noticia">
+      <span class="buena-noticia-label">La Buena Noticia</span>
+      ¡El intercambio fue total! Jesús tomó la corona que nosotros merecíamos (la de la maldición) para darnos la corona que solo Él merecía (la de la Vida). ¡Hoy caminas bajo un cielo abierto y una herencia activada!
+    </div>
+
+    <div class="titulo-principal">Una Corona, Una Victoria</div>
+    <div class="subtitulo">Los símbolos que la tierra no entendió y el cielo consumó</div>
+
+    <div class="separador">✦ ✦ ✦</div>
+
+    <div class="seccion-titulo"><span class="seccion-numero">V.</span> El Letrero de Pilato</div>
+    <div class="seccion-sub">Símbolo: cartel de condena → Realidad: Nombre sobre todo nombre</div>
+    <span class="verso-ref">Juan 19:19</span>
+    <span class="verso-text">«JESÚS NAZARENO, REY DE LOS JUDÍOS. Estaba escrito en hebreo, griego y latín.»</span>
+    <p>Pilato escribió un título para burlarse, pero terminó publicando el reinado de Cristo en los idiomas de la religión, la cultura y el poder. Lo que el hombre escribió en madera, el Padre lo escribió en la eternidad.</p>
+
+    <div class="seccion-titulo"><span class="seccion-numero">VI.</span> Los Dados y la Ropa</div>
+    <div class="seccion-sub">Símbolo: soldados repartiendo despojos → Realidad: El Rey repartiendo herencia</div>
+    <span class="verso-ref">Juan 19:23-24</span>
+    <span class="verso-text">«No la partamos, sino echemos suertes... para que se cumpliese la Escritura.»</span>
+    <p>En la tierra le quitaron todo. En el cielo, al sentarse en el trono, Él se convirtió en el dador de dones. Los soldados se quedaron con telas; nosotros nos quedamos con Su justicia.</p>
+
+    <div class="para-recordar">✦ «En la tierra le quitaron Su ropa para burlarse. En el cielo, Él nos vistió con ropas de salvación.»</div>
+  </div>
+
+  <div class="content tab-content" contenteditable="true" id="tab-minimal">
+    <div class="buena-noticia">
+        ¡Su victoria es tu victoria! La maldición se detuvo en Su cabeza para que la bendición fluyera sobre la tuya.
+    </div>
+    
+    <div class="titulo-principal" style="font-size: 26px;">Una Corona, Una Victoria</div>
+    
+    <div style="margin-top:20px">
+      <h3 style="color:var(--crimson)">I. La Corona</h3>
+      <span class="verso-ref">Génesis 3:18 / Mateo 27:29</span>
+      <span class="verso-text">«Espinos y cardos te producirá... pusieron sobre su cabeza una corona de espinas.»</span>
+      
+      <h3 style="color:var(--crimson)">V. El Letrero</h3>
+      <span class="verso-ref">Juan 19:19 / Filipenses 2:9</span>
+      <span class="verso-text">«Lo que he escrito, he escrito... un nombre que es sobre todo nombre.»</span>
+
+      <h3 style="color:var(--crimson)">VI. La Herencia</h3>
+      <span class="verso-ref">Salmo 22:18 / Efesios 4:8</span>
+      <span class="verso-text">«Repartieron mis vestidos... subiendo a lo alto, dio dones a los hombres.»</span>
+    </div>
+  </div>
+
+  <div class="content tab-content" id="tab-presentacion">
+    <div class="buena-noticia" style="background: var(--gold-glow); border-style: solid;">
+      <h2 style="color:var(--gold); font-family: 'Playfair Display'; margin-bottom: 10px;">BUENA NOTICIA</h2>
+      ¡Cristo transformó los instrumentos de tortura en insignias de Su Reino! Tu proceso actual es solo el ensayo de tu victoria.
+    </div>
+
+    <div class="titulo-principal">UNA CORONA, UNA VICTORIA</div>
+    <div class="separador">✦</div>
+
+    <div class="pres-box">
+      <div class="verso-ref">Hebreos 2:9 / Mateo 27:29</div>
+      <ul class="pres-bullet">
+        <li><b>La Corona:</b> La maldición termina en la Cruz; la Gloria comienza en el Trono.</li>
+        <li><b>El Intercambio:</b> Él llevó mis espinas para darme Su honra.</li>
+      </ul>
+    </div>
+
+    <div class="pres-box">
+      <div class="verso-ref">Filipenses 2:9-11</div>
+      <ul class="pres-bullet">
+        <li><b>El Nombre:</b> Por encima de cualquier diagnóstico, deuda o duda.</li>
+        <li><b>El Decreto:</b> Lo que Dios ha escrito sobre ti es irrevocable.</li>
+      </ul>
+    </div>
+
+    <div class="pres-box">
+        <div class="verso-ref">Romanos 8:17</div>
+        <ul class="pres-bullet">
+          <li><b>La Herencia:</b> No somos espectadores de Su victoria, somos coherederos de ella.</li>
+        </ul>
+    </div>
+  </div>
+</div>
+
+<script>
+  function switchTab(tabId) {
+    document.querySelectorAll('.tab-btn').forEach(btn => btn.classList.remove('active'));
+    document.querySelectorAll('.tab-content').forEach(content => content.classList.remove('active'));
+    
+    event.currentTarget.classList.add('active');
+    document.getElementById('tab-' + tabId).classList.add('active');
+  }
+
+  function execCmd(cmd) { document.execCommand(cmd, false, null); }
+  function execCmdVal(cmd, val) { document.execCommand(cmd, false, val); }
+</script>
+
+</body>
+</html>
